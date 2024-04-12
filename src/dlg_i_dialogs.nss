@@ -33,11 +33,11 @@
 ///   - DLG_EVENT_ABORT: The dialog was aborted by the player.
 /// -----------------------------------------------------------------------------
 
+#include "dlg_c_dialogs"
 #include "util_i_datapoint"
 #include "util_i_debug"
 #include "util_i_libraries"
 #include "util_i_lists"
-#include "dlg_c_dialogs"
 
 // -----------------------------------------------------------------------------
 //                                   Constants
@@ -51,34 +51,34 @@ const string DLG_RESREF_NOZOOM = "dlg_convnozoom";
 
 // ----- VarNames --------------------------------------------------------------
 
-const string DLG_DIALOG        = "*Dialog";
-const string DLG_CURRENT_PAGE  = "*CurrentPage";
-const string DLG_CURRENT_NODE  = "*CurrentNode";
-const string DLG_INITIALIZED   = "*Initialized";
-const string DLG_HAS           = "*Has";
-const string DLG_NODE          = "*Node";
-const string DLG_NODES         = "*Nodes";
-const string DLG_TEXT          = "*Text";
-const string DLG_DATA          = "*Data";
-const string DLG_TARGET        = "*Target";
-const string DLG_ENABLED       = "*Enabled";
-const string DLG_COLOR         = "*Color";
-const string DLG_CONTINUE      = "*Continue";
-const string DLG_HISTORY       = "*History";
-const string DLG_OFFSET        = "*Offset";
-const string DLG_FILTER        = "*Filter";
-const string DLG_FILTER_MAX    = "*FilterMax";
-const string DLG_SPEAKER       = "*Speaker";
-const string DLG_PRIVATE       = "*Private";
-const string DLG_NO_ZOOM       = "*NoZoom";
-const string DLG_NO_HELLO      = "*NoHello";
-const string DLG_TOKEN         = "*Token";
-const string DLG_TOKEN_CACHE   = "*TokenCache";
-const string DLG_TOKEN_VALUES  = "*TokenValues";
-const string DLG_ACTION        = "*Action";
-const string DLG_ACTION_CHECK  = "*Check";
-const string DLG_ACTION_NODE   = "*Node";
-const string DLG_ACTION_PAGE   = "*Page";
+const string DLG_DIALOG       = "*Dialog";
+const string DLG_CURRENT_PAGE = "*CurrentPage";
+const string DLG_CURRENT_NODE = "*CurrentNode";
+const string DLG_INITIALIZED  = "*Initialized";
+const string DLG_HAS          = "*Has";
+const string DLG_NODE         = "*Node";
+const string DLG_NODES        = "*Nodes";
+const string DLG_TEXT         = "*Text";
+const string DLG_DATA         = "*Data";
+const string DLG_TARGET       = "*Target";
+const string DLG_ENABLED      = "*Enabled";
+const string DLG_COLOR        = "*Color";
+const string DLG_CONTINUE     = "*Continue";
+const string DLG_HISTORY      = "*History";
+const string DLG_OFFSET       = "*Offset";
+const string DLG_FILTER       = "*Filter";
+const string DLG_FILTER_MAX   = "*FilterMax";
+const string DLG_SPEAKER      = "*Speaker";
+const string DLG_PRIVATE      = "*Private";
+const string DLG_NO_ZOOM      = "*NoZoom";
+const string DLG_NO_HELLO     = "*NoHello";
+const string DLG_TOKEN        = "*Token";
+const string DLG_TOKEN_CACHE  = "*TokenCache";
+const string DLG_TOKEN_VALUES = "*TokenValues";
+const string DLG_ACTION       = "*Action";
+const string DLG_ACTION_CHECK = "*Check";
+const string DLG_ACTION_NODE  = "*Node";
+const string DLG_ACTION_PAGE  = "*Page";
 
 // ----- Automated Node IDs ----------------------------------------------------
 
@@ -91,21 +91,21 @@ const int DLG_NODE_BACK     = -6;
 
 // ----- Dialog States ---------------------------------------------------------
 
-const string DLG_STATE = "*State";
-const int    DLG_STATE_INIT    = 0; // Dialog is new and uninitialized
-const int    DLG_STATE_RUNNING = 1; // Dialog is running normally
-const int    DLG_STATE_ENDED   = 2; // Dialog has ended
+const string DLG_STATE      = "*State";
+const int DLG_STATE_INIT    = 0; // Dialog is new and uninitialized
+const int DLG_STATE_RUNNING = 1; // Dialog is running normally
+const int DLG_STATE_ENDED   = 2; // Dialog has ended
 
 // ----- Dialog Events ---------------------------------------------------------
 
-const string DLG_EVENT = "*Event";
-const int    DLG_EVENT_NONE  = 0x00;
-const int    DLG_EVENT_INIT  = 0x01; // Dialog setup and initialization
-const int    DLG_EVENT_PAGE  = 0x02; // Page choice and action
-const int    DLG_EVENT_NODE  = 0x04; // Node selected action
-const int    DLG_EVENT_END   = 0x08; // Dialog ended normally
-const int    DLG_EVENT_ABORT = 0x10; // Dialog ended abnormally
-const int    DLG_EVENT_ALL   = 0x1f;
+const string DLG_EVENT    = "*Event";
+const int DLG_EVENT_NONE  = 0x00;
+const int DLG_EVENT_INIT  = 0x01; // Dialog setup and initialization
+const int DLG_EVENT_PAGE  = 0x02; // Page choice and action
+const int DLG_EVENT_NODE  = 0x04; // Node selected action
+const int DLG_EVENT_END   = 0x08; // Dialog ended normally
+const int DLG_EVENT_ABORT = 0x10; // Dialog ended abnormally
+const int DLG_EVENT_ALL   = 0x1f;
 
 const string DIALOG_EVENT_ON_INIT  = "OnDialogInit";
 const string DIALOG_EVENT_ON_PAGE  = "OnDialogPage";
@@ -116,8 +116,8 @@ const string DIALOG_EVENT_ON_ABORT = "OnDialogAbort";
 // ----- Event Prioroties ------------------------------------------------------
 
 const float DLG_PRIORITY_FIRST   = 10.0;
-const float DLG_PRIORITY_DEFAULT =  5.0;
-const float DLG_PRIORITY_LAST    =  0.0;
+const float DLG_PRIORITY_DEFAULT = 5.0;
+const float DLG_PRIORITY_LAST    = 0.0;
 
 // ----- Event Script Processing -----------------------------------------------
 const int DLG_SCRIPT_OK    = 0;
@@ -156,7 +156,8 @@ string DialogEventToString(int nEvent);
 ///     start.
 /// @param bNoZoom If TRUE, prevents zooming in towards oPC on dialog start.
 /// @note If oTarget is not a creature or placeable, oPC will talk to themselves.
-void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE, int bNoHello = FALSE, int bNoZoom = FALSE);
+void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE,
+                 int bNoHello = FALSE, int bNoZoom = FALSE);
 
 // ----- Dialog Setup ----------------------------------------------------------
 
@@ -310,7 +311,7 @@ void ClearDialogHistory();
 string GetDialogPage();
 
 /// @brief Return the current dialog page number.
-/// @returns 1, if the current page is a parent page; the page number if the 
+/// @returns 1, if the current page is a parent page; the page number if the
 ///     current page is a child page; 0, in case of error or page number cannot
 ///     be determined.
 int GetDialogPageNumber();
@@ -467,7 +468,7 @@ string GetCachedDialogToken(string sToken);
 ///     every time the token is encountered. This cache lasts for the lifetime of the
 ///     dialog.
 /// @param sToken Name of dialog token.
-/// @param sValue Cached value of dialog token. 
+/// @param sValue Cached value of dialog token.
 void CacheDialogToken(string sToken, string sValue);
 
 /// @brief Clears the cache for sToken, ensuring that the next time the token is
@@ -501,7 +502,8 @@ object GetDialogCache(string sDialog);
 /// @note fPriority is useful if there are multiple scripts that have been
 //      registered for this event to this dialog. This is useful if you want to have
 //      outside scripts add or handle new nodes and pages.
-void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL, float fPriority = DLG_PRIORITY_DEFAULT);
+void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL,
+                          float fPriority = DLG_PRIORITY_DEFAULT);
 
 /// @brief Sorts all scripts registered to the current dialog by priority.
 /// @param nEvent DLG_EVENT_* constant.
@@ -544,7 +546,9 @@ void DialogCleanup();
 string NodeToString(string sPage, int nNode = DLG_NODE_NONE)
 {
     if (nNode == DLG_NODE_NONE)
+    {
         return sPage;
+    }
 
     return sPage + DLG_NODE + IntToString(nNode);
 }
@@ -553,20 +557,28 @@ string DialogEventToString(int nEvent)
 {
     switch (nEvent)
     {
-        case DLG_EVENT_INIT:  return DIALOG_EVENT_ON_INIT;
-        case DLG_EVENT_PAGE:  return DIALOG_EVENT_ON_PAGE;
-        case DLG_EVENT_NODE:  return DIALOG_EVENT_ON_NODE;
-        case DLG_EVENT_END:   return DIALOG_EVENT_ON_END;
-        case DLG_EVENT_ABORT: return DIALOG_EVENT_ON_ABORT;
-     }
+    case DLG_EVENT_INIT:
+        return DIALOG_EVENT_ON_INIT;
+    case DLG_EVENT_PAGE:
+        return DIALOG_EVENT_ON_PAGE;
+    case DLG_EVENT_NODE:
+        return DIALOG_EVENT_ON_NODE;
+    case DLG_EVENT_END:
+        return DIALOG_EVENT_ON_END;
+    case DLG_EVENT_ABORT:
+        return DIALOG_EVENT_ON_ABORT;
+    }
 
-     return "";
+    return "";
 }
 
-void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE, int bNoHello = FALSE, int bNoZoom = FALSE)
+void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE,
+                 int bNoHello = FALSE, int bNoZoom = FALSE)
 {
     if (sDialog != "")
+    {
         SetLocalString(oPC, DLG_DIALOG, sDialog);
+    }
 
     // Since dialog zoom is not exposed to scripting, we use two dialogs: one
     // that zooms and one that doesn't.
@@ -591,7 +603,9 @@ void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", 
 int HasDialogPage(string sPage)
 {
     if (sPage == "")
+    {
         return FALSE;
+    }
 
     return GetLocalInt(DIALOG, sPage + DLG_HAS);
 }
@@ -607,7 +621,9 @@ string AddDialogPage(string sPage, string sText = "", string sData = "")
 
         // Page -> Page#2 -> Page#3...
         if (nCount > 1)
+        {
             sParent += "#" + IntToString(nCount);
+        }
 
         sPage += "#" + IntToString(nCount + 1);
         EnableDialogNode(DLG_NODE_CONTINUE, sParent);
@@ -615,10 +631,10 @@ string AddDialogPage(string sPage, string sText = "", string sData = "")
     }
 
     Debug("Adding dialog page " + sPage);
-    SetLocalString(DIALOG, sPage + DLG_TEXT,  sText);
-    SetLocalString(DIALOG, sPage + DLG_DATA,  sData);
+    SetLocalString(DIALOG, sPage + DLG_TEXT, sText);
+    SetLocalString(DIALOG, sPage + DLG_DATA, sData);
     SetLocalString(DIALOG, sPage + DLG_NODES, sPage);
-    SetLocalInt   (DIALOG, sPage + DLG_HAS,   TRUE);
+    SetLocalInt(DIALOG, sPage + DLG_HAS, TRUE);
     return sPage;
 }
 
@@ -631,16 +647,18 @@ void ContinueDialogPage(string sPage, string sTarget)
 int AddDialogNode(string sPage, string sTarget, string sText, string sData = "")
 {
     if (sPage == "")
+    {
         return DLG_NODE_NONE;
+    }
 
-    int    nNode = GetLocalInt(DIALOG, sPage + DLG_NODES);
+    int nNode    = GetLocalInt(DIALOG, sPage + DLG_NODES);
     string sNode = NodeToString(sPage, nNode);
 
     Debug("Adding dialog node " + sNode);
-    SetLocalString(DIALOG, sNode + DLG_TEXT,   sText);
+    SetLocalString(DIALOG, sNode + DLG_TEXT, sText);
     SetLocalString(DIALOG, sNode + DLG_TARGET, sTarget);
-    SetLocalString(DIALOG, sNode + DLG_DATA,   sData);
-    SetLocalInt   (DIALOG, sPage + DLG_NODES,  nNode + 1);
+    SetLocalString(DIALOG, sNode + DLG_DATA, sData);
+    SetLocalInt(DIALOG, sPage + DLG_NODES, nNode + 1);
     return nNode;
 }
 
@@ -655,7 +673,9 @@ int CopyDialogNode(string sSource, int nSource, string sTarget, int nTarget = DL
     int nTargetCount = CountDialogNodes(sTarget);
 
     if (nSource >= nSourceCount || nTarget >= nTargetCount)
+    {
         return DLG_NODE_NONE;
+    }
 
     if (nTarget == DLG_NODE_NONE)
     {
@@ -666,11 +686,11 @@ int CopyDialogNode(string sSource, int nSource, string sTarget, int nTarget = DL
     string sText, sData, sDest;
     sSource = NodeToString(sSource, nSource);
     sTarget = NodeToString(sTarget, nTarget);
-    sText = GetLocalString(DIALOG, sSource + DLG_TEXT);
-    sData = GetLocalString(DIALOG, sSource + DLG_DATA);
-    sDest = GetLocalString(DIALOG, sSource + DLG_TARGET);
-    SetLocalString(DIALOG, sTarget + DLG_TEXT,   sText);
-    SetLocalString(DIALOG, sTarget + DLG_DATA,   sData);
+    sText   = GetLocalString(DIALOG, sSource + DLG_TEXT);
+    sData   = GetLocalString(DIALOG, sSource + DLG_DATA);
+    sDest   = GetLocalString(DIALOG, sSource + DLG_TARGET);
+    SetLocalString(DIALOG, sTarget + DLG_TEXT, sText);
+    SetLocalString(DIALOG, sTarget + DLG_DATA, sData);
     SetLocalString(DIALOG, sTarget + DLG_TARGET, sDest);
     return nTarget;
 }
@@ -690,8 +710,8 @@ int CopyDialogNodes(string sSource, string sTarget)
         sDest = GetLocalString(DIALOG, sNode + DLG_TARGET);
 
         sNode = NodeToString(sTarget, nTarget + i);
-        SetLocalString(DIALOG, sNode + DLG_TEXT,   sText);
-        SetLocalString(DIALOG, sNode + DLG_DATA,   sData);
+        SetLocalString(DIALOG, sNode + DLG_TEXT, sText);
+        SetLocalString(DIALOG, sNode + DLG_DATA, sData);
         SetLocalString(DIALOG, sNode + DLG_TARGET, sDest);
     }
 
@@ -704,7 +724,9 @@ int DeleteDialogNode(string sPage, int nNode)
 {
     int nNodes = CountDialogNodes(sPage);
     if (nNode < 0)
+    {
         return nNodes;
+    }
 
     string sNode, sText, sData, sDest;
     for (nNode; nNode < nNodes; nNode++)
@@ -715,8 +737,8 @@ int DeleteDialogNode(string sPage, int nNode)
         sDest = GetLocalString(DIALOG, sNode + DLG_TARGET);
 
         sNode = NodeToString(sPage, nNode);
-        SetLocalString(DIALOG, sNode + DLG_TEXT,   sText);
-        SetLocalString(DIALOG, sNode + DLG_DATA,   sData);
+        SetLocalString(DIALOG, sNode + DLG_TEXT, sText);
+        SetLocalString(DIALOG, sNode + DLG_DATA, sData);
         SetLocalString(DIALOG, sNode + DLG_TARGET, sDest);
     }
 
@@ -747,10 +769,14 @@ void DeleteDialogNodes(string sPage)
 void FilterDialogNodes(int nStart, int nEnd = -1)
 {
     if (nStart < 0)
+    {
         return;
+    }
 
     if (nEnd < 0)
+    {
         nEnd = nStart;
+    }
 
     int nBlockStart = nStart / 30;
     int nBlockEnd   = nEnd / 30;
@@ -762,24 +788,36 @@ void FilterDialogNodes(int nStart, int nEnd = -1)
         nFilter = GetLocalInt(DIALOG, DLG_FILTER + IntToString(i));
 
         if (i == nBlockStart)
+        {
             nBitStart = nStart % 30;
+        }
         else
+        {
             nBitStart = 0;
+        }
 
         if (i == nBlockEnd)
+        {
             nBitEnd = nEnd % 30;
+        }
         else
+        {
             nBitEnd = 29;
+        }
 
         for (j = nBitStart; j <= nBitEnd; j++)
+        {
             nFilter |= 1 << j;
+        }
 
         SetLocalInt(DIALOG, DLG_FILTER + IntToString(i), nFilter);
     }
 
     int nMax = GetLocalInt(DIALOG, DLG_FILTER_MAX);
     if (nMax <= nBlockEnd)
+    {
         SetLocalInt(DIALOG, DLG_FILTER_MAX, nBlockEnd + 1);
+    }
 }
 
 // ----- Accessor Functions ----------------------------------------------------
@@ -797,7 +835,9 @@ string GetDialogNodes(string sPage)
 void SetDialogNodes(string sPage, string sSource = "")
 {
     if (sSource == "")
+    {
         sSource = sPage;
+    }
 
     SetLocalString(DIALOG, sPage + DLG_NODES, sSource);
 }
@@ -881,12 +921,18 @@ void SetDialogPage(string sPage, int nPage = 1)
     string sCurrent = GetLocalString(DIALOG, DLG_CURRENT_PAGE);
 
     if (sHistory == "" || sHistory == sCurrent)
+    {
         SetLocalString(DIALOG, DLG_HISTORY, sCurrent);
+    }
     else if (GetListItem(sHistory, 0) != sCurrent)
+    {
         SetLocalString(DIALOG, DLG_HISTORY, MergeLists(sCurrent, sHistory));
+    }
 
     if (nPage > 1)
+    {
         sPage += "#" + IntToString(nPage);
+    }
 
     SetLocalString(DIALOG, DLG_CURRENT_PAGE, sPage);
     SetLocalInt(DIALOG, DLG_CURRENT_PAGE, TRUE);
@@ -910,10 +956,14 @@ int GetDialogEvent()
 string GetDialogLabel(int nNode, string sPage = "")
 {
     if (nNode >= DLG_NODE_NONE)
+    {
         return "";
+    }
 
     if (!GetLocalInt(DIALOG, NodeToString(sPage, nNode) + DLG_TEXT))
+    {
         sPage = "";
+    }
 
     return GetLocalString(DIALOG, NodeToString(sPage, nNode) + DLG_TEXT);
 }
@@ -921,32 +971,36 @@ string GetDialogLabel(int nNode, string sPage = "")
 void SetDialogLabel(int nNode, string sLabel, string sPage = "")
 {
     if (nNode >= DLG_NODE_NONE)
+    {
         return;
+    }
 
     string sNode = NodeToString(sPage, nNode);
     SetLocalString(DIALOG, sNode + DLG_TEXT, sLabel);
-    SetLocalInt   (DIALOG, sNode + DLG_TEXT, TRUE);
+    SetLocalInt(DIALOG, sNode + DLG_TEXT, TRUE);
 }
 
 void EnableDialogNode(int nNode, string sPage = "")
 {
     string sNode = NodeToString(sPage, nNode);
     SetLocalInt(DIALOG, sNode + DLG_ENABLED, TRUE);
-    SetLocalInt(DIALOG, sNode + DLG_HAS,     TRUE);
+    SetLocalInt(DIALOG, sNode + DLG_HAS, TRUE);
 }
 
 void DisableDialogNode(int nNode, string sPage = "")
 {
     string sNode = NodeToString(sPage, nNode);
     SetLocalInt(DIALOG, sNode + DLG_ENABLED, FALSE);
-    SetLocalInt(DIALOG, sNode + DLG_HAS,     TRUE);
+    SetLocalInt(DIALOG, sNode + DLG_HAS, TRUE);
 }
 
 int DialogNodeEnabled(int nNode, string sPage = "")
 {
     string sNode = NodeToString(sPage, nNode);
     if (!GetLocalInt(DIALOG, sNode + DLG_HAS))
+    {
         sNode = NodeToString("", nNode);
+    }
 
     return GetLocalInt(DIALOG, sNode + DLG_ENABLED);
 }
@@ -981,10 +1035,14 @@ int GetDialogFilter(int nPos = 0)
 string GetDialogColor(int nNode, string sPage = "")
 {
     if (nNode >= DLG_NODE_NONE)
+    {
         return "";
+    }
 
     if (!GetLocalInt(DIALOG, NodeToString(sPage, nNode) + DLG_COLOR))
+    {
         sPage = "";
+    }
 
     return GetLocalString(DIALOG, NodeToString(sPage, nNode) + DLG_COLOR);
 }
@@ -992,12 +1050,14 @@ string GetDialogColor(int nNode, string sPage = "")
 void SetDialogColor(int nNode, int nColor, string sPage = "")
 {
     if (nNode >= DLG_NODE_NONE)
+    {
         return;
+    }
 
-    string sNode = NodeToString(sPage, nNode);
+    string sNode  = NodeToString(sPage, nNode);
     string sColor = HexToColor(nColor);
     SetLocalString(DIALOG, sNode + DLG_COLOR, sColor);
-    SetLocalInt   (DIALOG, sNode + DLG_COLOR, TRUE);
+    SetLocalInt(DIALOG, sNode + DLG_COLOR, TRUE);
 }
 
 // ----- Dialog Tokens ---------------------------------------------------------
@@ -1005,11 +1065,15 @@ void SetDialogColor(int nNode, int nColor, string sPage = "")
 string NormalizeDialogToken(string sToken)
 {
     if (GetLocalInt(DIALOG, DLG_TOKEN + "*" + sToken))
+    {
         return sToken;
+    }
 
     string sLower = GetStringLowerCase(sToken);
     if (sToken == sLower || !GetLocalInt(DIALOG, DLG_TOKEN + "*" + sLower))
+    {
         return "";
+    }
 
     return sLower;
 }
@@ -1021,7 +1085,7 @@ void SetDialogTokenValue(string sValue)
 
 void AddDialogToken(string sToken, string sEvalScript, string sValues = "")
 {
-    SetLocalInt   (DIALOG, DLG_TOKEN + "*" + sToken, TRUE);
+    SetLocalInt(DIALOG, DLG_TOKEN + "*" + sToken, TRUE);
     SetLocalString(DIALOG, DLG_TOKEN + "*" + sToken, sEvalScript);
     SetLocalString(DIALOG, DLG_TOKEN_VALUES + "*" + sToken, sValues);
 }
@@ -1029,56 +1093,58 @@ void AddDialogToken(string sToken, string sEvalScript, string sValues = "")
 void AddDialogTokens()
 {
     if (!GetIsLibraryLoaded("dlg_l_tokens"))
+    {
         LoadLibrary("dlg_l_tokens");
+    }
 
     string sPrefix = "DialogToken_";
-    AddDialogToken("alignment",       sPrefix + "Alignment");
-    AddDialogToken("bitch/bastard",   sPrefix + "Gender", "Bastard, Bitch");
-    AddDialogToken("boy/girl",        sPrefix + "Gender", "Boy, Girl");
-    AddDialogToken("brother/sister",  sPrefix + "Gender", "Brother, Sister");
-    AddDialogToken("class",           sPrefix + "Class");
-    AddDialogToken("classes",         sPrefix + "Class");
-    AddDialogToken("day/night",       sPrefix + "DayNight");
-    AddDialogToken("Deity",           sPrefix + "Deity");
-    AddDialogToken("FirstName",       sPrefix + "Name");
-    AddDialogToken("FullName",        sPrefix + "Name");
-    AddDialogToken("gameday",         sPrefix + "GameDate");
-    AddDialogToken("gamedate",        sPrefix + "GameDate");
-    AddDialogToken("gamehour",        sPrefix + "GameTime");
-    AddDialogToken("gameminute",      sPrefix + "GameTime");
-    AddDialogToken("gamemonth",       sPrefix + "GameDate");
-    AddDialogToken("gamesecond",      sPrefix + "GameTime");
-    AddDialogToken("gametime12",      sPrefix + "GameTime");
-    AddDialogToken("gametime24",      sPrefix + "GameTime");
-    AddDialogToken("gameyear",        sPrefix + "GameDate");
-    AddDialogToken("good/evil",       sPrefix + "Alignment");
-    AddDialogToken("he/she",          sPrefix + "Gender", "He, She");
-    AddDialogToken("him/her",         sPrefix + "Gender", "Him, Her");
-    AddDialogToken("his/her",         sPrefix + "Gender", "His, Her");
-    AddDialogToken("his/hers",        sPrefix + "Gender", "His, Hers");
-    AddDialogToken("lad/lass",        sPrefix + "Gender", "Lad, Lass");
-    AddDialogToken("LastName",        sPrefix + "Name");
-    AddDialogToken("lawful/chaotic",  sPrefix + "Alignment");
-    AddDialogToken("law/chaos",       sPrefix + "Alignment");
-    AddDialogToken("level",           sPrefix + "Level");
-    AddDialogToken("lord/lady",       sPrefix + "Gender", "Lord, Lady");
-    AddDialogToken("male/female",     sPrefix + "Gender", "Male, Female");
-    AddDialogToken("man/woman",       sPrefix + "Gender", "Man, Woman");
+    AddDialogToken("alignment", sPrefix + "Alignment");
+    AddDialogToken("bitch/bastard", sPrefix + "Gender", "Bastard, Bitch");
+    AddDialogToken("boy/girl", sPrefix + "Gender", "Boy, Girl");
+    AddDialogToken("brother/sister", sPrefix + "Gender", "Brother, Sister");
+    AddDialogToken("class", sPrefix + "Class");
+    AddDialogToken("classes", sPrefix + "Class");
+    AddDialogToken("day/night", sPrefix + "DayNight");
+    AddDialogToken("Deity", sPrefix + "Deity");
+    AddDialogToken("FirstName", sPrefix + "Name");
+    AddDialogToken("FullName", sPrefix + "Name");
+    AddDialogToken("gameday", sPrefix + "GameDate");
+    AddDialogToken("gamedate", sPrefix + "GameDate");
+    AddDialogToken("gamehour", sPrefix + "GameTime");
+    AddDialogToken("gameminute", sPrefix + "GameTime");
+    AddDialogToken("gamemonth", sPrefix + "GameDate");
+    AddDialogToken("gamesecond", sPrefix + "GameTime");
+    AddDialogToken("gametime12", sPrefix + "GameTime");
+    AddDialogToken("gametime24", sPrefix + "GameTime");
+    AddDialogToken("gameyear", sPrefix + "GameDate");
+    AddDialogToken("good/evil", sPrefix + "Alignment");
+    AddDialogToken("he/she", sPrefix + "Gender", "He, She");
+    AddDialogToken("him/her", sPrefix + "Gender", "Him, Her");
+    AddDialogToken("his/her", sPrefix + "Gender", "His, Her");
+    AddDialogToken("his/hers", sPrefix + "Gender", "His, Hers");
+    AddDialogToken("lad/lass", sPrefix + "Gender", "Lad, Lass");
+    AddDialogToken("LastName", sPrefix + "Name");
+    AddDialogToken("lawful/chaotic", sPrefix + "Alignment");
+    AddDialogToken("law/chaos", sPrefix + "Alignment");
+    AddDialogToken("level", sPrefix + "Level");
+    AddDialogToken("lord/lady", sPrefix + "Gender", "Lord, Lady");
+    AddDialogToken("male/female", sPrefix + "Gender", "Male, Female");
+    AddDialogToken("man/woman", sPrefix + "Gender", "Man, Woman");
     AddDialogToken("master/mistress", sPrefix + "Gender", "Master, Mistress");
-    AddDialogToken("mister/missus",   sPrefix + "Gender", "Mister, Missus");
-    AddDialogToken("PlayerName",      sPrefix + "PlayerName");
-    AddDialogToken("quarterday",      sPrefix + "QuarterDay");
-    AddDialogToken("race",            sPrefix + "Race");
-    AddDialogToken("races",           sPrefix + "Race");
-    AddDialogToken("racial",          sPrefix + "Race");
-    AddDialogToken("sir/madam",       sPrefix + "Gender", "Sir, Madam");
-    AddDialogToken("subrace",         sPrefix + "SubRace");
-    AddDialogToken("StartAction",     sPrefix + "Token", HexToColor(DLG_COLOR_ACTION));
-    AddDialogToken("StartCheck",      sPrefix + "Token", HexToColor(DLG_COLOR_CHECK));
-    AddDialogToken("StartHighlight",  sPrefix + "Token", HexToColor(DLG_COLOR_HIGHLIGHT));
-    AddDialogToken("/Start",          sPrefix + "Token", "</c>");
-    AddDialogToken("token",           sPrefix + "Token", "<");
-    AddDialogToken("/token",          sPrefix + "Token", ">");
+    AddDialogToken("mister/missus", sPrefix + "Gender", "Mister, Missus");
+    AddDialogToken("PlayerName", sPrefix + "PlayerName");
+    AddDialogToken("quarterday", sPrefix + "QuarterDay");
+    AddDialogToken("race", sPrefix + "Race");
+    AddDialogToken("races", sPrefix + "Race");
+    AddDialogToken("racial", sPrefix + "Race");
+    AddDialogToken("sir/madam", sPrefix + "Gender", "Sir, Madam");
+    AddDialogToken("subrace", sPrefix + "SubRace");
+    AddDialogToken("StartAction", sPrefix + "Token", HexToColor(DLG_COLOR_ACTION));
+    AddDialogToken("StartCheck", sPrefix + "Token", HexToColor(DLG_COLOR_CHECK));
+    AddDialogToken("StartHighlight", sPrefix + "Token", HexToColor(DLG_COLOR_HIGHLIGHT));
+    AddDialogToken("/Start", sPrefix + "Token", "</c>");
+    AddDialogToken("token", sPrefix + "Token", "<");
+    AddDialogToken("/token", sPrefix + "Token", ">");
 }
 
 void AddCachedDialogToken(string sToken, string sValue)
@@ -1090,7 +1156,9 @@ void AddCachedDialogToken(string sToken, string sValue)
 string GetCachedDialogToken(string sToken)
 {
     if (GetLocalInt(DIALOG, DLG_TOKEN_CACHE + "*" + sToken))
+    {
         return GetLocalString(DIALOG, DLG_TOKEN_CACHE + "*" + sToken);
+    }
 
     return "";
 }
@@ -1098,14 +1166,14 @@ string GetCachedDialogToken(string sToken)
 void CacheDialogToken(string sToken, string sValue)
 {
     Debug("Caching value for token <" + sToken + ">: " + sValue);
-    SetLocalInt   (DIALOG, DLG_TOKEN_CACHE + "*" + sToken, TRUE);
+    SetLocalInt(DIALOG, DLG_TOKEN_CACHE + "*" + sToken, TRUE);
     SetLocalString(DIALOG, DLG_TOKEN_CACHE + "*" + sToken, sValue);
 }
 
 void UnCacheDialogToken(string sToken)
 {
     Debug("Clearing cache for token <" + sToken + ">");
-    DeleteLocalInt   (DIALOG, DLG_TOKEN_CACHE + "*" + sToken);
+    DeleteLocalInt(DIALOG, DLG_TOKEN_CACHE + "*" + sToken);
     DeleteLocalString(DIALOG, DLG_TOKEN_CACHE + "*" + sToken);
 }
 
@@ -1115,7 +1183,9 @@ string EvalDialogToken(string sToken, object oPC)
 
     // Ensure this is a valid token
     if (sNormal == "")
+    {
         return "<" + sToken + ">";
+    }
 
     // Check the cached token value. This saves us having to run a library
     // script to get a known result.
@@ -1138,7 +1208,9 @@ string EvalDialogToken(string sToken, object oPC)
     // Token eval scripts should always yield the uppercase version of the
     // token. If the desired value is lowercase, we change it here.
     if (sToken == GetStringLowerCase(sToken))
+    {
         sEval = GetStringLowerCase(sEval);
+    }
 
     // If we are supposed to cache the results, do so. We have to check the PC
     // since the token script will not have access to the DIALOG object.
@@ -1153,19 +1225,22 @@ string EvalDialogToken(string sToken, object oPC)
 
 string EvalDialogTokens(string sString)
 {
-    object oPC = GetPCSpeaker();
+    object oPC   = GetPCSpeaker();
     json jTokens = RegExpIterate("<(.*?)>", sString);
     if (jTokens == JSON_ARRAY)
+    {
         return sString;
+    }
 
     jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
-    
+
     json jEval = JSON_ARRAY;
-    int n; for (n; n < JsonGetLength(jTokens); n++)
+    int n;
+    for (n; n < JsonGetLength(jTokens); n++)
     {
         string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
-        sString = RegExpReplace("<" + sToken + ">", sString, "^" + IntToString(n + 1));
-        jEval = JsonArrayInsert(jEval, JsonString(EvalDialogToken(sToken, oPC)));
+        sString       = RegExpReplace("<" + sToken + ">", sString, "^" + IntToString(n + 1));
+        jEval         = JsonArrayInsert(jEval, JsonString(EvalDialogToken(sToken, oPC)));
     }
 
     return SubstituteString(sString, jEval, "^");
@@ -1177,32 +1252,39 @@ object GetDialogCache(string sDialog)
 {
     object oCache = GetDataItem(DIALOGS, DLG_PREFIX + sDialog);
     if (!GetIsObjectValid(oCache))
+    {
         oCache = CreateDataItem(DIALOGS, DLG_PREFIX + sDialog);
+    }
 
     return oCache;
 }
 
-void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL, float fPriority = DLG_PRIORITY_DEFAULT)
+void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL,
+                          float fPriority = DLG_PRIORITY_DEFAULT)
 {
     if (fPriority < DLG_PRIORITY_LAST || fPriority > DLG_PRIORITY_FIRST)
+    {
         return;
+    }
 
     if (sScript == "")
+    {
         sScript = sDialog;
+    }
 
     string sEvent;
     object oCache = GetDialogCache(sDialog);
-    int nEvent = DLG_EVENT_INIT;
+    int nEvent    = DLG_EVENT_INIT;
 
     for (nEvent; nEvent < DLG_EVENT_ALL; nEvent <<= 1)
     {
         if (nEvents & nEvent)
         {
             sEvent = DialogEventToString(nEvent);
-            Debug("Adding " + sScript + " to " + sDialog + "'s " + sEvent +
-                  " event with a priority of " + FloatToString(fPriority, 2, 2));
-            AddListString(oCache, sScript,   sEvent);
-            AddListFloat (oCache, fPriority, sEvent);
+            Debug("Adding " + sScript + " to " + sDialog + "'s " + sEvent + " event with a priority of " +
+                  FloatToString(fPriority, 2, 2));
+            AddListString(oCache, sScript, sEvent);
+            AddListFloat(oCache, fPriority, sEvent);
 
             // Mark the event as unsorted
             SetLocalInt(oCache, sEvent, FALSE);
@@ -1212,17 +1294,17 @@ void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG
 
 void SortDialogScripts(int nEvent)
 {
-    string sEvent = DialogEventToString(nEvent);
+    string sEvent  = DialogEventToString(nEvent);
     json jPriority = GetFloatList(DIALOG, sEvent);
     if (jPriority == JsonArray())
+    {
         return;
+    }
 
     Debug("Sorting " + IntToString(JsonGetLength(jPriority)) + " scripts for " + sEvent);
 
-    string sQuery = "SELECT json_group_array(id - 1) " +
-                    "FROM (SELECT id, atom " +
-                        "FROM json_each(json('" + JsonDump(jPriority) + "')) " +
-                        "ORDER BY value);";
+    string sQuery = "SELECT json_group_array(id - 1) " + "FROM (SELECT id, atom " + "FROM json_each(json('" +
+                    JsonDump(jPriority) + "')) " + "ORDER BY value);";
     sqlquery sql = SqlPrepareQueryObject(GetModule(), sQuery);
     SqlStep(sql);
 
@@ -1235,13 +1317,15 @@ void SendDialogEvent(int nEvent)
     string sScript, sEvent = DialogEventToString(nEvent);
 
     if (!GetLocalInt(DIALOG, sEvent))
+    {
         SortDialogScripts(nEvent);
+    }
 
     int i, nIndex, nCount = CountIntList(DIALOG, sEvent);
 
     for (i = 0; i < nCount; i++)
     {
-        nIndex  = GetListInt   (DIALOG, i,      sEvent);
+        nIndex  = GetListInt(DIALOG, i, sEvent);
         sScript = GetListString(DIALOG, nIndex, sEvent);
 
         SetLocalInt(DIALOG, DLG_EVENT, nEvent);
@@ -1264,14 +1348,16 @@ void SendDialogEvent(int nEvent)
 
 void InitializeDialog()
 {
-    object oPC = GetPCSpeaker();
+    object oPC     = GetPCSpeaker();
     string sDialog = GetLocalString(oPC, DLG_DIALOG);
 
     if (sDialog == "")
     {
         sDialog = GetLocalString(OBJECT_SELF, DLG_DIALOG);
         if (sDialog == "")
+        {
             sDialog = GetTag(OBJECT_SELF);
+        }
     }
 
     DIALOG = GetDialogCache(sDialog);
@@ -1280,22 +1366,24 @@ void InitializeDialog()
         Debug("Initializing dialog " + sDialog);
         SetLocalString(DIALOG, DLG_DIALOG, sDialog);
         SetDialogLabel(DLG_NODE_CONTINUE, DLG_LABEL_CONTINUE);
-        SetDialogLabel(DLG_NODE_PREV,     DLG_LABEL_PREV);
-        SetDialogLabel(DLG_NODE_NEXT,     DLG_LABEL_NEXT);
-        SetDialogLabel(DLG_NODE_BACK,     DLG_LABEL_BACK);
-        SetDialogLabel(DLG_NODE_END,      DLG_LABEL_END);
+        SetDialogLabel(DLG_NODE_PREV, DLG_LABEL_PREV);
+        SetDialogLabel(DLG_NODE_NEXT, DLG_LABEL_NEXT);
+        SetDialogLabel(DLG_NODE_BACK, DLG_LABEL_BACK);
+        SetDialogLabel(DLG_NODE_END, DLG_LABEL_END);
         SetDialogColor(DLG_NODE_CONTINUE, DLG_COLOR_CONTINUE);
-        SetDialogColor(DLG_NODE_PREV,     DLG_COLOR_PREV);
-        SetDialogColor(DLG_NODE_NEXT,     DLG_COLOR_NEXT);
-        SetDialogColor(DLG_NODE_BACK,     DLG_COLOR_BACK);
-        SetDialogColor(DLG_NODE_END,      DLG_COLOR_END);
+        SetDialogColor(DLG_NODE_PREV, DLG_COLOR_PREV);
+        SetDialogColor(DLG_NODE_NEXT, DLG_COLOR_NEXT);
+        SetDialogColor(DLG_NODE_BACK, DLG_COLOR_BACK);
+        SetDialogColor(DLG_NODE_END, DLG_COLOR_END);
         AddDialogTokens();
         SetLocalObject(oPC, DLG_SYSTEM, DIALOG);
         SendDialogEvent(DLG_EVENT_INIT);
         SetLocalInt(DIALOG, DLG_INITIALIZED, TRUE);
     }
     else
+    {
         Debug("Dialog " + sDialog + " has already been initialized");
+    }
 
     if (GetIsObjectValid(oPC))
     {
@@ -1306,7 +1394,9 @@ void InitializeDialog()
         SetDialogNode(DLG_NODE_NONE);
 
         if (!GetIsObjectValid(DLG_SELF))
+        {
             SetLocalObject(oPC, DLG_SPEAKER, OBJECT_SELF);
+        }
     }
 }
 
@@ -1314,11 +1404,15 @@ int LoadDialogPage()
 {
     // Do not reset if we got here from an automatic node
     if (GetDialogNode() > DLG_NODE_NONE)
+    {
         SetDialogOffset(0);
+    }
 
     int i, nFilters = GetLocalInt(DIALOG, DLG_FILTER_MAX);
     for (i = 0; i < nFilters; i++)
+    {
         DeleteLocalInt(DIALOG, DLG_FILTER + IntToString(i));
+    }
 
     DeleteLocalInt(DIALOG, DLG_FILTER_MAX);
 
@@ -1328,12 +1422,18 @@ int LoadDialogPage()
     string sMessage;
     string sPage = GetDialogPage();
     if (!HasDialogPage(sPage))
+    {
         Warning(sMessage = "No dialog page found. Aborting...");
+    }
     else if (GetDialogState() == DLG_STATE_ENDED)
+    {
         Debug(sMessage = "Dialog ended by the event script. Aborting...");
+    }
 
     if (sMessage != "")
+    {
         return FALSE;
+    }
 
     string sText = GetDialogText(sPage);
     SetCustomToken(DLG_CUSTOM_TOKEN, EvalDialogTokens(sText));
@@ -1346,11 +1446,10 @@ int LoadDialogPage()
 void MapDialogNode(int nNode, int nTarget, string sText, string sPage = "")
 {
     string sNode = IntToString(nNode);
-    int nMax = DLG_MAX_RESPONSES + 5;
+    int nMax     = DLG_MAX_RESPONSES + 5;
     if (nNode < 0 || nNode > nMax)
     {
-        Error("Attempted to set dialog response node " + sNode +
-              " but max is " + IntToString(nMax));
+        Error("Attempted to set dialog response node " + sNode + " but max is " + IntToString(nMax));
         return;
     }
 
@@ -1359,7 +1458,7 @@ void MapDialogNode(int nNode, int nTarget, string sText, string sPage = "")
     if (nTarget < DLG_NODE_NONE)
     {
         string sColor = GetDialogColor(nTarget, sPage);
-        sText = ColorString(sText, sColor);
+        sText         = ColorString(sText, sColor);
     }
 
     Debug("Setting response node " + sNode + " -> " + IntToString(nTarget));
@@ -1370,7 +1469,7 @@ void MapDialogNode(int nNode, int nTarget, string sText, string sPage = "")
 void LoadDialogNodes()
 {
     string sText, sTarget;
-    string sPage = GetDialogPage();
+    string sPage  = GetDialogPage();
     string sNodes = GetDialogNodes(sPage);
     int nNodes;
 
@@ -1385,7 +1484,7 @@ void LoadDialogNodes()
     int nMax = DLG_MAX_RESPONSES + nNodes;
     int i, nMod, nPos, bFilter;
     int nFilter = GetDialogFilter();
-    int nCount = CountDialogNodes(sNodes);
+    int nCount  = CountDialogNodes(sNodes);
     int nOffset = GetDialogOffset();
 
     // Check which nodes to show and set their tokens
@@ -1394,27 +1493,31 @@ void LoadDialogNodes()
         nMod    = nPos % 30;
         sText   = GetDialogText(sNodes, i);
         sTarget = GetDialogTarget(sNodes, i);
-        bFilter  = !(nFilter & (1 << nMod));
+        bFilter = !(nFilter & (1 << nMod));
 
-        Debug("Checking dialog node " + IntToString(i) +
-              "\n  Target: " + sTarget +
-              "\n  Text: " + sText +
+        Debug("Checking dialog node " + IntToString(i) + "\n  Target: " + sTarget + "\n  Text: " + sText +
               "\n  Display: " + (bFilter ? "yes" : "no"));
 
         if (bFilter && i >= nOffset)
         {
             // We check this here so we know if we need a "next" node.
             if (nNodes >= nMax)
+            {
                 break;
+            }
 
             MapDialogNode(nNodes++, i, sText);
         }
 
         // Load the next filter chunk
         if (nMod == 29)
+        {
             nFilter = GetDialogFilter((i + 1) / 30);
+        }
         else
+        {
             nPos++;
+        }
     }
 
     // Check if we need automatic nodes
@@ -1448,9 +1551,9 @@ void LoadDialogNodes()
 
 void DoDialogNode(int nClicked)
 {
-    int nNode = GetLocalInt(DIALOG, DLG_NODES + IntToString(nClicked));
-    string sPage = GetDialogPage();
-    string sNodes = GetDialogNodes(sPage);
+    int nNode      = GetLocalInt(DIALOG, DLG_NODES + IntToString(nClicked));
+    string sPage   = GetDialogPage();
+    string sNodes  = GetDialogNodes(sPage);
     string sTarget = GetDialogTarget(sNodes, nNode);
 
     if (nNode == DLG_NODE_END)
@@ -1474,7 +1577,7 @@ void DoDialogNode(int nClicked)
     else if (nNode == DLG_NODE_BACK && sTarget == "")
     {
         string sHistory = GetDialogHistory();
-        string sLast = GetListItem(sHistory, 0);
+        string sLast    = GetListItem(sHistory, 0);
         if (sLast != "")
         {
             sTarget = sLast;
@@ -1488,7 +1591,9 @@ void DoDialogNode(int nClicked)
 
     // Check if the page change was already handled by the user.
     if (!GetLocalInt(DIALOG, DLG_CURRENT_PAGE))
+    {
         SetDialogPage(sTarget);
+    }
 }
 
 void DialogCleanup()
