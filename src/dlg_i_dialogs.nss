@@ -75,6 +75,7 @@ const string DLG_NO_HELLO     = "*NoHello";
 const string DLG_TOKEN        = "*Token";
 const string DLG_TOKEN_CACHE  = "*TokenCache";
 const string DLG_TOKEN_VALUES = "*TokenValues";
+const string DLG_TOKEN_SCRIPT = "*TokenScript";
 const string DLG_ACTION       = "*Action";
 const string DLG_ACTION_CHECK = "*Check";
 const string DLG_ACTION_NODE  = "*Node";
@@ -1069,6 +1070,11 @@ string NormalizeDialogToken(string sToken)
         return sToken;
     }
 
+    if (GetLocalString(DIALOG, DLG_TOKEN_SCRIPT) != "")
+    {
+        return sToken;
+    }
+
     string sLower = GetStringLowerCase(sToken);
     if (sToken == sLower || !GetLocalInt(DIALOG, DLG_TOKEN + "*" + sLower))
     {
@@ -1081,6 +1087,11 @@ string NormalizeDialogToken(string sToken)
 void SetDialogTokenValue(string sValue)
 {
     SetLocalString(GetPCSpeaker(), DLG_TOKEN, sValue);
+}
+
+void SetDialogTokenScript(string sScript)
+{
+    SetLocalString(DIALOG, DLG_TOKEN_SCRIPT, sScript);
 }
 
 void AddDialogToken(string sToken, string sEvalScript, string sValues = "")
@@ -1143,8 +1154,6 @@ void AddDialogTokens()
     AddDialogToken("StartCheck", sPrefix + "Token", HexToColor(DLG_COLOR_CHECK));
     AddDialogToken("StartHighlight", sPrefix + "Token", HexToColor(DLG_COLOR_HIGHLIGHT));
     AddDialogToken("/Start", sPrefix + "Token", "</c>");
-    AddDialogToken("token", sPrefix + "Token", "<");
-    AddDialogToken("/token", sPrefix + "Token", ">");
 }
 
 void AddCachedDialogToken(string sToken, string sValue)
@@ -1197,6 +1206,10 @@ string EvalDialogToken(string sToken, object oPC)
     }
 
     string sScript = GetLocalString(DIALOG, DLG_TOKEN + "*" + sNormal);
+    if (sScript == "")
+    {
+        sScript = GetLocalString(DIALOG, DLG_TOKEN_SCRIPT);
+    }
     string sValues = GetLocalString(DIALOG, DLG_TOKEN_VALUES + "*" + sNormal);
 
     SetLocalString(oPC, DLG_TOKEN, sNormal);
@@ -1225,25 +1238,48 @@ string EvalDialogToken(string sToken, object oPC)
 
 string EvalDialogTokens(string sString)
 {
-    object oPC   = GetPCSpeaker();
-    json jTokens = RegExpIterate("<(.*?)>", sString);
-    if (jTokens == JSON_ARRAY)
+    int i;
+    object oPC  = GetPCSpeaker();
+    json jEvals = JSON_ARRAY, jCheck = JSON_ARRAY;
+
+    while (TRUE)
     {
-        return sString;
+        json jTokens = RegExpIterate("<(?!c...>|/c>)(.*?)>(?!>)", sString);
+        if (jTokens == JSON_ARRAY)
+        {
+            break;
+        }
+
+        jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
+
+        if (jTokens == jCheck)
+        {
+            break;
+        }
+        jCheck = jTokens;
+
+        int n;
+        for (n; n < JsonGetLength(jTokens); n++)
+        {
+            string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
+
+            if (GetStringLeft(sToken, 1) == "<" && GetStringRight(sToken, 1) == ">")
+            {
+                sString = SubstituteSubStrings(sString, "<" + sToken + ">", "$" + IntToString(++i));
+                JsonArrayInsertInplace(jEvals, JsonString(sToken));
+            }
+            else
+            {
+                string sEval = EvalDialogToken(sToken, oPC);
+                if ("<" + sToken + ">" != sEval)
+                {
+                    sString = SubstituteSubStrings(sString, "<" + sToken + ">", sEval);
+                }
+            }
+        }
     }
 
-    jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
-
-    json jEval = JSON_ARRAY;
-    int n;
-    for (n; n < JsonGetLength(jTokens); n++)
-    {
-        string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
-        sString       = RegExpReplace("<" + sToken + ">", sString, "^" + IntToString(n + 1));
-        jEval         = JsonArrayInsert(jEval, JsonString(EvalDialogToken(sToken, oPC)));
-    }
-
-    return SubstituteString(sString, jEval, "^");
+    return SubstituteString(sString, jEvals, "$");
 }
 
 // ----- System Functions ------------------------------------------------------
@@ -1281,8 +1317,8 @@ void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG
         if (nEvents & nEvent)
         {
             sEvent = DialogEventToString(nEvent);
-            Debug("Adding " + sScript + " to " + sDialog + "'s " + sEvent + " event with a priority of " +
-                  FloatToString(fPriority, 2, 2));
+            Debug("Adding " + sScript + " to " + sDialog + "'s " + sEvent +
+                  " event with a priority of " + FloatToString(fPriority, 2, 2));
             AddListString(oCache, sScript, sEvent);
             AddListFloat(oCache, fPriority, sEvent);
 
@@ -1303,8 +1339,8 @@ void SortDialogScripts(int nEvent)
 
     Debug("Sorting " + IntToString(JsonGetLength(jPriority)) + " scripts for " + sEvent);
 
-    string sQuery = "SELECT json_group_array(id - 1) " + "FROM (SELECT id, atom " + "FROM json_each(json('" +
-                    JsonDump(jPriority) + "')) " + "ORDER BY value);";
+    string sQuery = "SELECT json_group_array(id - 1) " + "FROM (SELECT id, atom " +
+                    "FROM json_each(json('" + JsonDump(jPriority) + "')) " + "ORDER BY value);";
     sqlquery sql = SqlPrepareQueryObject(GetModule(), sQuery);
     SqlStep(sql);
 
@@ -1495,8 +1531,8 @@ void LoadDialogNodes()
         sTarget = GetDialogTarget(sNodes, i);
         bFilter = !(nFilter & (1 << nMod));
 
-        Debug("Checking dialog node " + IntToString(i) + "\n  Target: " + sTarget + "\n  Text: " + sText +
-              "\n  Display: " + (bFilter ? "yes" : "no"));
+        Debug("Checking dialog node " + IntToString(i) + "\n  Target: " + sTarget +
+              "\n  Text: " + sText + "\n  Display: " + (bFilter ? "yes" : "no"));
 
         if (bFilter && i >= nOffset)
         {
