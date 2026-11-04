@@ -157,8 +157,12 @@ string DialogEventToString(int nEvent);
 ///     start.
 /// @param bNoZoom If TRUE, prevents zooming in towards oPC on dialog start.
 /// @note If oTarget is not a creature or placeable, oPC will talk to themselves.
-void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE,
-                 int bNoHello = FALSE, int bNoZoom = FALSE);
+void StartDialog(object oPC,
+    object oTarget = OBJECT_SELF,
+    string sDialog = "",
+    int bPrivate   = FALSE,
+    int bNoHello   = FALSE,
+    int bNoZoom    = FALSE);
 
 // ----- Dialog Setup ----------------------------------------------------------
 
@@ -503,8 +507,10 @@ object GetDialogCache(string sDialog);
 /// @note fPriority is useful if there are multiple scripts that have been
 //      registered for this event to this dialog. This is useful if you want to have
 //      outside scripts add or handle new nodes and pages.
-void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL,
-                          float fPriority = DLG_PRIORITY_DEFAULT);
+void RegisterDialogScript(string sDialog,
+    string sScript  = "",
+    int nEvents     = DLG_EVENT_ALL,
+    float fPriority = DLG_PRIORITY_DEFAULT);
 
 /// @brief Sorts all scripts registered to the current dialog by priority.
 /// @param nEvent DLG_EVENT_* constant.
@@ -558,23 +564,22 @@ string DialogEventToString(int nEvent)
 {
     switch (nEvent)
     {
-    case DLG_EVENT_INIT:
-        return DIALOG_EVENT_ON_INIT;
-    case DLG_EVENT_PAGE:
-        return DIALOG_EVENT_ON_PAGE;
-    case DLG_EVENT_NODE:
-        return DIALOG_EVENT_ON_NODE;
-    case DLG_EVENT_END:
-        return DIALOG_EVENT_ON_END;
-    case DLG_EVENT_ABORT:
-        return DIALOG_EVENT_ON_ABORT;
+        case DLG_EVENT_INIT: return DIALOG_EVENT_ON_INIT;
+        case DLG_EVENT_PAGE: return DIALOG_EVENT_ON_PAGE;
+        case DLG_EVENT_NODE: return DIALOG_EVENT_ON_NODE;
+        case DLG_EVENT_END: return DIALOG_EVENT_ON_END;
+        case DLG_EVENT_ABORT: return DIALOG_EVENT_ON_ABORT;
     }
 
     return "";
 }
 
-void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE,
-                 int bNoHello = FALSE, int bNoZoom = FALSE)
+void StartDialog(object oPC,
+    object oTarget = OBJECT_SELF,
+    string sDialog = "",
+    int bPrivate   = FALSE,
+    int bNoHello   = FALSE,
+    int bNoZoom    = FALSE)
 {
     if (sDialog != "")
     {
@@ -1295,8 +1300,10 @@ object GetDialogCache(string sDialog)
     return oCache;
 }
 
-void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL,
-                          float fPriority = DLG_PRIORITY_DEFAULT)
+void RegisterDialogScript(string sDialog,
+    string sScript  = "",
+    int nEvents     = DLG_EVENT_ALL,
+    float fPriority = DLG_PRIORITY_DEFAULT)
 {
     if (fPriority < DLG_PRIORITY_LAST || fPriority > DLG_PRIORITY_FIRST)
     {
@@ -1341,7 +1348,7 @@ void SortDialogScripts(int nEvent)
 
     string sQuery = "SELECT json_group_array(id - 1) " + "FROM (SELECT id, atom " +
                     "FROM json_each(json('" + JsonDump(jPriority) + "')) " + "ORDER BY value);";
-    sqlquery sql = SqlPrepareQueryObject(GetModule(), sQuery);
+    sqlquery sql  = SqlPrepareQueryObject(GetModule(), sQuery);
     SqlStep(sql);
 
     SetIntList(DIALOG, SqlGetJson(sql, 0), sEvent);
@@ -1607,7 +1614,7 @@ void DoDialogNode(int nClicked)
     else if (nNode == DLG_NODE_PREV)
     {
         int nOffset = GetDialogOffset() - DLG_MAX_RESPONSES;
-        SetDialogOffset((nOffset < 0 ? 0 : nOffset));
+        SetDialogOffset(nOffset < 0 ? 0 : nOffset);
         sTarget = sPage;
     }
     else if (nNode == DLG_NODE_BACK && sTarget == "")
